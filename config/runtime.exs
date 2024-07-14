@@ -81,4 +81,9 @@ if config_env() == :prod do
   #       force_ssl: [hsts: true]
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
+
+  config :openai,
+    api_key: System.fetch_env!("OPENAI_API_KEY"),
+    organization_key: System.fetch_env!("OPENAI_ORG_KEY"),
+    http_options: [recv_timeout: 30_000]
 end
