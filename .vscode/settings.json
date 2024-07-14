@@ -1,0 +1,6 @@
+{
+    "elixir.formatter": {
+        "mixFormatArgs": "--dry-run",
+        "formatterCwd": "../some/dir/to/run/mix/format/from"
+      }
+}
