@@ -42,7 +42,9 @@ defmodule RecipeParser.MixProject do
       {:req, "~> 0.5.2"},
       {:ffmpex, "~> 0.10.0"},
       {:openai, "~> 0.6.1"},
-      {:mogrify, "~> 0.9.1"}
+      {:mogrify, "~> 0.9.3"},
+      {:open_api_spex, "~> 3.20"},
+      {:mimic, "~> 1.7", only: :test}
     ]
   end
 

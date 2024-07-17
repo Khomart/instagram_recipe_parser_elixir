@@ -1,1 +1,6 @@
 ExUnit.start()
+Mimic.copy(RecipeParser.Parser)
+Mimic.copy(RecipeParser.Resizer)
+Mimic.copy(OpenAI)
+Mimic.copy(File)
+Mimic.copy(FFmpex)

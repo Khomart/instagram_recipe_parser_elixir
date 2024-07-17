@@ -1,6 +1,8 @@
 # The directory Mix will write compiled artifacts to.
 /_build/
 
+/downloads/*/*
+
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
 
@@ -35,3 +37,4 @@ recipe_parser-*.tar
 npm-debug.log
 /assets/node_modules/
 
+openapi*
