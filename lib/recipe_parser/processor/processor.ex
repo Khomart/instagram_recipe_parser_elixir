@@ -11,7 +11,6 @@ defmodule RecipeParser.Processor do
   def summarize_content(folder_path) do
     case File.ls(folder_path) do
       {:ok, files} ->
-        dbg(files)
         files
         |> Enum.map(&Path.join(folder_path, &1))
         |> Enum.reduce_while("", fn file_path, acc ->
@@ -19,11 +18,10 @@ defmodule RecipeParser.Processor do
 
           case summarize_file(file_path, ext) do
             {:ok, summary} ->
-              dbg(summary)
-               {:cont, acc <> summary <> "\n"}
+              {:cont, acc <> summary <> "\n"}
+
             {:error, reason} ->
-              dbg(reason)
-               {:halt, {:error, reason}}
+              {:halt, {:error, reason}}
           end
         end)
         |> case do
@@ -31,7 +29,6 @@ defmodule RecipeParser.Processor do
             {:error, reason}
 
           content ->
-            dbg(content)
             OpenAI.chat_completion(
               model: "gpt-4-turbo",
               messages: [
@@ -44,8 +41,11 @@ defmodule RecipeParser.Processor do
               max_tokens: 1000
             )
             |> case do
-              {:ok, %{choices: [%{"message" => %{"content" => final_summary}}]}} -> {:ok, final_summary}
-              {:error, reason} -> {:error, "Failed to create recipe instruction: #{reason}"}
+              {:ok, %{choices: [%{"message" => %{"content" => final_summary}}]}} ->
+                {:ok, final_summary}
+
+              {:error, reason} ->
+                {:error, "Failed to create recipe instruction: #{reason}"}
             end
         end
 
@@ -79,19 +79,21 @@ defmodule RecipeParser.Processor do
     case File.read(file_path) do
       {:ok, _img_data} ->
         base64_img = Resizer.resize_and_encode_image(file_path, 800, 800)
+
         response =
           OpenAI.chat_completion(
-            [
-              model: "gpt-4-vision-preview",
-              messages: [
-                %{
-                  role: "user",
-                  content: [
-                    %{type: "text", text: "Analyze the following image and summarize it as a recipe instruction"},
-                    %{type: "image_url", image_url: "data:image/jpeg;base64,#{base64_img}"}
+            model: "gpt-4-vision-preview",
+            messages: [
+              %{
+                role: "user",
+                content: [
+                  %{
+                    type: "text",
+                    text: "Analyze the following image and summarize it as a recipe instruction"
+                  },
+                  %{type: "image_url", image_url: "data:image/jpeg;base64,#{base64_img}"}
                 ]
-                }
-              ]
+              }
             ]
           )
 

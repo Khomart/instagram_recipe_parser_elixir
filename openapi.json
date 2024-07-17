@@ -1,0 +1,95 @@
+{
+    "components": {
+        "responses": {},
+        "schemas": {
+            "RecipeRequest": {
+                "description": "Recipe Request schema",
+                "example": {
+                    "url": "https://www.instagram.com/abcdx"
+                },
+                "properties": {
+                    "url": {
+                        "description": "URL with resources to be parsed",
+                        "type": "string",
+                        "x-struct": null,
+                        "x-validate": null
+                    }
+                },
+                "required": [
+                    "url"
+                ],
+                "title": "RecipeRequest",
+                "type": "object",
+                "x-struct": "Elixir.RecipeParserWeb.Schemas.RecipeRequest",
+                "x-validate": null
+            },
+            "RecipeResponse": {
+                "description": "The response of a successful recipe extraction",
+                "properties": {
+                    "response": {
+                        "description": "The extracted recipe information",
+                        "type": "string",
+                        "x-struct": null,
+                        "x-validate": null
+                    }
+                },
+                "required": [
+                    "response"
+                ],
+                "title": "RecipeResponse",
+                "type": "object",
+                "x-struct": "Elixir.RecipeParserWeb.Schemas.RecipeResponse",
+                "x-validate": null
+            }
+        }
+    },
+    "info": {
+        "title": "My App",
+        "version": "1.0"
+    },
+    "openapi": "3.0.0",
+    "paths": {
+        "/api/parse": {
+            "post": {
+                "callbacks": {},
+                "operationId": "RecipeParserWeb.ParsingController.recipe",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RecipeRequest"
+                            }
+                        }
+                    },
+                    "description": "User params",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeResponse"
+                                }
+                            }
+                        },
+                        "description": "User response"
+                    }
+                },
+                "summary": "Extracts recipe information from a given URL",
+                "tags": [
+                    "parsing"
+                ]
+            }
+        }
+    },
+    "security": [],
+    "servers": [
+        {
+            "url": "http://localhost:4000",
+            "variables": {}
+        }
+    ],
+    "tags": []
+}

@@ -16,7 +16,9 @@ defmodule RecipeParser.Downloader do
         Logger.info("Fetched post metadata: #{inspect(post)}")
 
         case download_post(download_folder, post, idx) do
-          :ok -> :ok
+          :ok ->
+            :ok
+
           {:error, exception} ->
             Logger.error("Error downloading post, exception #{exception}")
             :error

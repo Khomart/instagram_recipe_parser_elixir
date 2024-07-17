@@ -15,7 +15,10 @@ defmodule RecipeParser.ProcessorTest do
 
       expect(File, :ls, fn ^folder_path -> {:ok, ["test.txt"]} end)
       expect(File, :read, fn ^file_path -> {:ok, content} end)
-      stub(OpenAI, :chat_completion, fn _ -> {:ok, %{choices: [%{"message" => %{"content" => summary}}]}} end)
+
+      stub(OpenAI, :chat_completion, fn _ ->
+        {:ok, %{choices: [%{"message" => %{"content" => summary}}]}}
+      end)
 
       assert Processor.summarize_content(folder_path) == {:ok, summary <> ""}
     end
@@ -28,8 +31,14 @@ defmodule RecipeParser.ProcessorTest do
 
       expect(File, :ls, fn ^folder_path -> {:ok, ["test.jpg"]} end)
       expect(File, :read, fn ^file_path -> {:ok, <<255, 216, 255>>} end)
-      expect(RecipeParser.Resizer, :resize_and_encode_image, fn ^file_path, 800, 800 -> base64_img end)
-      stub(OpenAI, :chat_completion, fn _ -> {:ok, %{choices: [%{"message" => %{"content" => summary}}]}} end)
+
+      expect(RecipeParser.Resizer, :resize_and_encode_image, fn ^file_path, 800, 800 ->
+        base64_img
+      end)
+
+      stub(OpenAI, :chat_completion, fn _ ->
+        {:ok, %{choices: [%{"message" => %{"content" => summary}}]}}
+      end)
 
       assert Processor.summarize_content(folder_path) == {:ok, summary <> ""}
     end
@@ -51,7 +60,8 @@ defmodule RecipeParser.ProcessorTest do
 
       expect(File, :ls, fn ^folder_path -> {:error, error_reason} end)
 
-      assert Processor.summarize_content(folder_path) == {:error, "Failed to read folder: #{error_reason}"}
+      assert Processor.summarize_content(folder_path) ==
+               {:error, "Failed to read folder: #{error_reason}"}
     end
 
     test "returns error for unsupported file types" do

@@ -5,14 +5,15 @@ defmodule RecipeParserWeb.ParsingController do
   alias RecipeParser.Parser
   alias RecipeParserWeb.Schemas.{RecipeRequest, RecipeResponse}
 
-  tags ["parsing"]
+  tags(["parsing"])
 
-  operation :recipe,
+  operation(:recipe,
     summary: "Extracts recipe information from a given URL",
     request_body: {"User params", "application/json", RecipeRequest},
     responses: [
       ok: {"User response", "application/json", RecipeResponse}
     ]
+  )
 
   def recipe(conn, request) do
     %{"Url" => url} = request
@@ -22,14 +23,12 @@ defmodule RecipeParserWeb.ParsingController do
         json(conn, %{response: resp})
 
       {:error, error} ->
-        dbg(error)
         conn
         |> put_status(500)
         |> Phoenix.Controller.json(%{error: error})
         |> halt()
 
       error ->
-        dbg(error)
         conn
         |> put_status(500)
         |> Phoenix.Controller.json(%{error: error})
